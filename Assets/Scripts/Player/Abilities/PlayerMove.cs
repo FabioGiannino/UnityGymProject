@@ -19,10 +19,19 @@ public class PlayerMove : PlayerAbilityBase
     {
         move = InputManager.Player.Move;
         wasWalking = false;
+        playerController.OnLaunchStarted += OnLaunchStarted;
+        playerController.OnLaunchEnded += OnLaunchEnded;
     }
+    private void OnDisable()
+    {
+        playerController.OnLaunchStarted -= OnLaunchStarted;
+        playerController.OnLaunchEnded -= OnLaunchEnded;
+    }
+
     private void Update()
     {
         if(isPrevented) return;
+
         Move();
         Turn();
         HandleEvent();
@@ -50,8 +59,8 @@ public class PlayerMove : PlayerAbilityBase
     private void Move()
     {
         float speed = maxSpeed * move.ReadValue<float>();
-        SetSpeed(speed);
-        playerController.IsWalking = speed != 0;        
+        playerController.IsWalking = speed != 0;
+        SetSpeed(speed);        
     }
     private void Turn()
     {
@@ -83,6 +92,17 @@ public class PlayerMove : PlayerAbilityBase
     { 
         Vector2 velocity = new Vector2(speed, playerController.PlayerRigidBody.velocity.y);
         playerController.PlayerRigidBody.velocity = velocity;
+    }
+    #endregion
+
+    #region Callbacks
+    private void OnLaunchStarted()
+    {
+        isPrevented = true;
+    }
+    private void OnLaunchEnded()
+    {
+        isPrevented = false;
     }
     #endregion
 }

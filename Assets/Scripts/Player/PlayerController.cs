@@ -56,7 +56,10 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-
+    #region Ability: Launch
+    public Action OnLaunchStarted;
+    public Action OnLaunchEnded;
+    #endregion
 
     #region DebugLogAbilities
     /*Inscribe all actions to a simple debug.Log to see if they will correctly called*/
@@ -66,6 +69,8 @@ public class PlayerController : MonoBehaviour
         OnWalkEnded += () => Debug.Log("OnWalkEnded Called");
         OnGroundLanded += () => Debug.Log("OnGroundLanded Called");
         OnGroundReleased += () => Debug.Log("OnGroundReleased Called");
+        OnLaunchStarted += () => Debug.Log("OnLaunchStarted Called");
+        OnLaunchEnded += () => Debug.Log("OnLaunchEnded Called");
     }
     #endregion
 }
