@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
     #region Singleton 
     private static Player instance;
     public static Player GetPlayer {  

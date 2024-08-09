@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 13966, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: GymTemplate
+  m_EditorClassIdentifier: 
+  templateScene: {fileID: 102900000, guid: 362b31aa49fc874478ec18f9cba935b9, type: 3}
+  templateName: 
+  description: 
+  preview: {fileID: 0}
+  dependencies:
+  - dependency: {fileID: 3126577896347571085, guid: 5909fc1a49d214449a8cf29386ab854e, type: 3}
+    instantiationMode: 0
+  - dependency: {fileID: 9079025110339476968, guid: a26625628fde9d8499b5c878f2bf0b99, type: 3}
+    instantiationMode: 0
+  - dependency: {fileID: 3873837540427566686, guid: 9b75661ec8c107043b70a7a2ebd35756, type: 3}
+    instantiationMode: 0
+  - dependency: {fileID: 2800000, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+    instantiationMode: 0
+  - dependency: {fileID: 2800000, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+    instantiationMode: 0
+  templatePipeline: {fileID: 0}
+  badge: {fileID: 0}
+  addToDefaults: 0
