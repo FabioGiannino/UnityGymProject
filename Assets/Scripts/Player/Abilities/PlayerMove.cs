@@ -20,12 +20,12 @@ public class PlayerMove : PlayerAbilityBase
         move = InputManager.Player.Move;
         wasWalking = false;
         playerController.OnLaunchStarted += OnLaunchStarted;
-        playerController.OnLaunchEnded += OnLaunchEnded;
+        playerController.OnGroundLanded += OnGroundLanded;
     }
     private void OnDisable()
     {
         playerController.OnLaunchStarted -= OnLaunchStarted;
-        playerController.OnLaunchEnded -= OnLaunchEnded;
+        playerController.OnGroundLanded -= OnGroundLanded;
     }
 
     private void Update()
@@ -100,7 +100,7 @@ public class PlayerMove : PlayerAbilityBase
     {
         isPrevented = true;
     }
-    private void OnLaunchEnded()
+    private void OnGroundLanded()
     {
         isPrevented = false;
     }

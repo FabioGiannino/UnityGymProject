@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,9 +8,18 @@ public class PlayerLaunch : PlayerAbilityBase
     [SerializeField]
     private Camera mainCamera;
     [SerializeField]
-    private float launchForce;
+    private float maxLaunchForce;
+    [SerializeField]
+    private float minLaunchForce; 
+    [SerializeField]
+    protected AnimationCurve incrementationForceCurve;
+    [SerializeField]
+    private float maxEvaluationInputTime;
 
-    private Vector2 mousePos;
+
+    
+    private Vector2 forceVector;
+    private Coroutine launchCoroutine;
 
     private void OnEnable()
     {
@@ -30,7 +40,9 @@ public class PlayerLaunch : PlayerAbilityBase
     {
         if (!context.performed) return;
         if (!CanBeLaunched()) return;
-        Launch();
+        Time.timeScale = 0;
+        SetForceNormalized();
+        launchCoroutine = StartCoroutine(LaunchCoroutine());
     }
 
     private bool CanBeLaunched()
@@ -38,21 +50,43 @@ public class PlayerLaunch : PlayerAbilityBase
         return !isPrevented;
     }
 
+
+    private void SetForceNormalized()
+    {
+        Vector2 mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        forceVector = mousePos - (Vector2)playerController.transform.position;
+        forceVector = forceVector.normalized;
+    }
+
     private void Launch()
     {
-        mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Vector2 forceVector = mousePos - (Vector2)playerController.transform.position;
-        forceVector = forceVector.normalized;
-        forceVector *= launchForce;
-        playerController.PlayerRigidBody.AddForce(forceVector,ForceMode2D.Impulse);
+        Time.timeScale = 1;
+        playerController.PlayerRigidBody.AddForce(forceVector, ForceMode2D.Impulse);
         playerController.OnLaunchStarted?.Invoke();
-        /*
-        mousePos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        if (InputManager.Player.Launch.IsPressed())
+    }
+
+    private IEnumerator LaunchCoroutine()
+    {
+        if (!InputManager.Player.Launch.IsPressed())
         {
-            Debug.Log("IsPressed LeftMouse");
+            forceVector *= minLaunchForce;            
+            Launch();
+            StopAbility();
+            yield break;
         }
-        */
+
+        float inputTime = 0;
+        float evaluate = 0;
+        while (inputTime< maxEvaluationInputTime && InputManager.Player.Launch.IsPressed())
+        {
+            inputTime += Time.fixedUnscaledDeltaTime;
+            evaluate = Mathf.Lerp(minLaunchForce, maxLaunchForce, incrementationForceCurve.Evaluate(inputTime / maxEvaluationInputTime));
+            yield return new WaitForSecondsRealtime(Time.fixedUnscaledDeltaTime);
+        }
+        forceVector *= evaluate;
+        Launch();
+        StopAbility();
+        
     }
 
     #region Override
@@ -68,14 +102,18 @@ public class PlayerLaunch : PlayerAbilityBase
 
     public override void StopAbility()
     {
-        
+        if(launchCoroutine != null)
+        {
+            StopCoroutine(launchCoroutine);
+        }
     }
     #endregion
 
     #region Callbacks
+
     private void OnGroundLanded()
     {
-        playerController.OnLaunchEnded?.Invoke();
+        //playerController.OnLaunchEnded?.Invoke();
     }
     #endregion
 

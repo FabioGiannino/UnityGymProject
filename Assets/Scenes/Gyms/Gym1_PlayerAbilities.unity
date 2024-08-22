@@ -201,6 +201,54 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 2063256308}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: maxLaunchForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: minLaunchForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: maxEvaluationInputTime
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[0].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[1].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[0].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[1].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: incrementationForceCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
     - target: {fileID: 7875592003308786159, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09613562
