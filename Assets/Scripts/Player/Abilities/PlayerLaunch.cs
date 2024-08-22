@@ -15,9 +15,12 @@ public class PlayerLaunch : PlayerAbilityBase
     protected AnimationCurve incrementationForceCurve;
     [SerializeField]
     private float maxEvaluationInputTime;
+    [SerializeField]
+    private int maxConsecutiveLaunches;
 
 
     
+    private int currentConsecutiveLaunch;
     private Vector2 forceVector;
     private Coroutine launchCoroutine;
 
@@ -25,6 +28,7 @@ public class PlayerLaunch : PlayerAbilityBase
     {
         if (mainCamera == null)
             mainCamera = (Camera)FindObjectOfType(typeof(Camera));
+        currentConsecutiveLaunch = 0;
 
         InputManager.Player.Launch.performed += OnInputPerformed;
         playerController.OnGroundLanded += OnGroundLanded;
@@ -47,7 +51,7 @@ public class PlayerLaunch : PlayerAbilityBase
 
     private bool CanBeLaunched()
     {
-        return !isPrevented;
+        return !isPrevented && currentConsecutiveLaunch < maxConsecutiveLaunches;
     }
 
 
@@ -67,6 +71,7 @@ public class PlayerLaunch : PlayerAbilityBase
 
     private IEnumerator LaunchCoroutine()
     {
+        currentConsecutiveLaunch++;
         if (!InputManager.Player.Launch.IsPressed())
         {
             forceVector *= minLaunchForce;            
@@ -78,10 +83,10 @@ public class PlayerLaunch : PlayerAbilityBase
         float inputTime = 0;
         float evaluate = 0;
         while (inputTime< maxEvaluationInputTime && InputManager.Player.Launch.IsPressed())
-        {
-            inputTime += Time.fixedUnscaledDeltaTime;
+        {            
+            inputTime += Time.unscaledDeltaTime;
             evaluate = Mathf.Lerp(minLaunchForce, maxLaunchForce, incrementationForceCurve.Evaluate(inputTime / maxEvaluationInputTime));
-            yield return new WaitForSecondsRealtime(Time.fixedUnscaledDeltaTime);
+            yield return null;
         }
         forceVector *= evaluate;
         Launch();
@@ -113,7 +118,7 @@ public class PlayerLaunch : PlayerAbilityBase
 
     private void OnGroundLanded()
     {
-        //playerController.OnLaunchEnded?.Invoke();
+        currentConsecutiveLaunch = 0;
     }
     #endregion
 

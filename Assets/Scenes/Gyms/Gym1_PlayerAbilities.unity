@@ -210,8 +210,12 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
+      propertyPath: maxConsecutiveLaunches
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
       propertyPath: maxEvaluationInputTime
-      value: 1.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6811913446744180529, guid: 2c74ee8cd65f204479d70bc264b88cfa, type: 3}
       propertyPath: incrementationForceCurve.m_Curve.Array.size
