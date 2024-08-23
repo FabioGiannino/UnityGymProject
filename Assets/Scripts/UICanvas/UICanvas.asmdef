@@ -1,0 +1,16 @@
+{
+    "name": "UICanvas",
+    "rootNamespace": "",
+    "references": [
+        "GUID:62958d3c4663ee845b5942483d28e3b5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

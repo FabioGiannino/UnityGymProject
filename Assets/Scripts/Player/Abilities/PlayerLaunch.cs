@@ -19,11 +19,11 @@ public class PlayerLaunch : PlayerAbilityBase
     private int maxConsecutiveLaunches;
 
 
-    
     private int currentConsecutiveLaunch;
     private Vector2 forceVector;
     private Coroutine launchCoroutine;
 
+    #region Mono
     private void OnEnable()
     {
         if (mainCamera == null)
@@ -39,16 +39,21 @@ public class PlayerLaunch : PlayerAbilityBase
         InputManager.Player.Launch.performed -= OnInputPerformed;
         playerController.OnGroundLanded -= OnGroundLanded;
     }
+    #endregion
 
+    #region Input
     private void OnInputPerformed(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
         if (!CanBeLaunched()) return;
         Time.timeScale = 0;
-        SetForceNormalized();
+        playerController.PlayerRigidBody.velocity = Vector2.zero;
+        GlobalEventSystem.CastEvent(EventName.LaunchPlayerStart, EventArgsFactory.LaunchPlayerStartFactory(maxEvaluationInputTime));
         launchCoroutine = StartCoroutine(LaunchCoroutine());
     }
+    #endregion
 
+    #region PrivateMethods
     private bool CanBeLaunched()
     {
         return !isPrevented && currentConsecutiveLaunch < maxConsecutiveLaunches;
@@ -67,13 +72,17 @@ public class PlayerLaunch : PlayerAbilityBase
         Time.timeScale = 1;
         playerController.PlayerRigidBody.AddForce(forceVector, ForceMode2D.Impulse);
         playerController.OnLaunchStarted?.Invoke();
+        GlobalEventSystem.CastEvent(EventName.LaunchPlayerStop, EventArgsFactory.LaunchPlayerStopFactory());
     }
+    #endregion
 
+    #region Coroutine
     private IEnumerator LaunchCoroutine()
     {
         currentConsecutiveLaunch++;
         if (!InputManager.Player.Launch.IsPressed())
         {
+            SetForceNormalized();
             forceVector *= minLaunchForce;            
             Launch();
             StopAbility();
@@ -88,11 +97,13 @@ public class PlayerLaunch : PlayerAbilityBase
             evaluate = Mathf.Lerp(minLaunchForce, maxLaunchForce, incrementationForceCurve.Evaluate(inputTime / maxEvaluationInputTime));
             yield return null;
         }
+        SetForceNormalized();
         forceVector *= evaluate;
         Launch();
         StopAbility();
         
     }
+    #endregion
 
     #region Override
     public override void OnInputDisable()
