@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     #region Singleton 
     private static Player instance;
     public static Player GetPlayer {  
@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
             instance = GameObject.FindObjectOfType<Player>();
             return instance;
         } 
-    }
+    }    
     #endregion
 
     #region Mono
@@ -29,4 +29,5 @@ public class Player : MonoBehaviour
         DontDestroyOnLoad(gameObject); 
     }
     #endregion
+
 }

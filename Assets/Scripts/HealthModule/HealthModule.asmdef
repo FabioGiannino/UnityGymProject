@@ -1,10 +1,8 @@
 {
-    "name": "Player",
+    "name": "HealthModule",
     "rootNamespace": "",
     "references": [
-        "GUID:62958d3c4663ee845b5942483d28e3b5",
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:4294f1ff04215ad438bdde2d9b70912a"
+        "GUID:62958d3c4663ee845b5942483d28e3b5"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

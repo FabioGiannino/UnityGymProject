@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D playerRigidBody;
     [SerializeField]
     private Collider2D playerPhysicsCollider;
+    [SerializeField]
+    private float timerInputDisableAfterHit;
     #endregion
 
     #region Properties
@@ -34,14 +36,17 @@ public class PlayerController : MonoBehaviour
             ability.enabled = true;
         }
         DebugAbilities();
+
+        OnDamageTaken += InternalOnDamageTaken;
     }
     #endregion
-
 
     #region Ability: Walk
     public Action OnWalkStarted { get; set; }
     public Action OnWalkEnded { get; set;}
     public bool IsWalking { get; set; }
+    public Action OnIceStateEntered;
+    public Action OnIceStateExited;
     #endregion
 
     #region Ability: Jump
@@ -59,6 +64,63 @@ public class PlayerController : MonoBehaviour
     #region Ability: Launch
     public Action OnLaunchStarted;
     //public Action OnLaunchEnded;
+    #endregion
+
+    #region Implementation: HealthModule
+    public Action<DamageContainer> OnDamageTaken;
+    private void InternalOnDamageTaken(DamageContainer damage)
+    {
+        StartCoroutine(StopInputCoroutine(timerInputDisableAfterHit));
+        switch (damage.DamageType)
+        {
+            case DamageType.NormalDamage:
+                Debug.Log("Player ha preso Normal Damage: " + damage.DamageAmount);
+                break;
+            case DamageType.FireDamage:
+                Debug.Log("Player ha preso Fire Damage: " + damage.DamageAmount);
+                break;
+            case DamageType.IceDamage:
+                Debug.Log("Player ha preso Ice Damage: " + damage.DamageAmount);
+                OnIceStateEntered?.Invoke();
+                StartCoroutine(IceStateCoroutine());
+                break;
+            case DamageType.PoisonDamage:
+                Debug.Log("Player ha preso Poison Damage: " + damage.DamageAmount);
+                break;
+        }
+    }
+    #endregion
+
+    #region InternalMethods
+    private void DisableInputs()
+    {
+        foreach (var ability in abilities)
+        {
+            ability.OnInputDisable();
+        }
+    }
+    private void EnableInputs()
+    {
+        foreach (var ability in abilities)
+        {
+            ability.OnInputEnable();
+        }
+    }
+    private IEnumerator StopInputCoroutine(float freezeTime)
+    {
+        DisableInputs();
+        yield return new WaitForSeconds(freezeTime);
+        EnableInputs();
+    }
+    private IEnumerator IceStateCoroutine()
+    {
+        yield return new WaitForSeconds(10);
+        OnIceStateExited?.Invoke(); 
+    }
+    #endregion
+
+    #region Public Methods
+
     #endregion
 
     #region DebugLogAbilities

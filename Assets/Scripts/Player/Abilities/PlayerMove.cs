@@ -9,6 +9,7 @@ public class PlayerMove : PlayerAbilityBase
     #endregion
 
     #region Private Attributes
+    private float currentMaxSpeed;
     private InputAction move;
     private bool wasWalking;
     private const float turnSpeedOffset = 0.05f;
@@ -17,10 +18,13 @@ public class PlayerMove : PlayerAbilityBase
     #region Mono
     private void OnEnable()
     {
+        currentMaxSpeed = maxSpeed;
         move = InputManager.Player.Move;
         wasWalking = false;
         playerController.OnLaunchStarted += OnLaunchStarted;
         playerController.OnGroundLanded += OnGroundLanded;
+        playerController.OnIceStateEntered += OnIceStateEntered;
+        playerController.OnIceStateExited += OnIceStateExited;
     }
     private void OnDisable()
     {
@@ -52,13 +56,15 @@ public class PlayerMove : PlayerAbilityBase
 
     public override void StopAbility()
     {
+        SetSpeed(0);
+        playerController.OnWalkEnded?.Invoke();
     }
     #endregion
 
     #region Private Methods
     private void Move()
     {
-        float speed = maxSpeed * move.ReadValue<float>();
+        float speed = currentMaxSpeed * move.ReadValue<float>();
         playerController.IsWalking = speed != 0;
         SetSpeed(speed);        
     }
@@ -103,6 +109,14 @@ public class PlayerMove : PlayerAbilityBase
     private void OnGroundLanded()
     {
         isPrevented = false;
+    }
+    private void OnIceStateEntered()
+    {
+        currentMaxSpeed = currentMaxSpeed * 0.5f;
+    }
+    private void OnIceStateExited()
+    {
+        currentMaxSpeed = maxSpeed;
     }
     #endregion
 }
