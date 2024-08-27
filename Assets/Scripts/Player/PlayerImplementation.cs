@@ -34,6 +34,10 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
         //TODO
 
     }
+    private void NotifyHealthUpdate()
+    {
+        GlobalEventSystem.CastEvent(EventName.PlayerHealthUpdate, EventArgsFactory.PlayerHealthUpdateFactory(healthModule.MaxHealth, healthModule.CurrentHealth));
+    }
     #endregion
 
 }

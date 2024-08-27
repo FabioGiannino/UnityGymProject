@@ -1,0 +1,17 @@
+{
+    "name": "HUD",
+    "rootNamespace": "",
+    "references": [
+        "GUID:62958d3c4663ee845b5942483d28e3b5",
+        "GUID:0822f63bc97139f44b92a6de1552f882"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

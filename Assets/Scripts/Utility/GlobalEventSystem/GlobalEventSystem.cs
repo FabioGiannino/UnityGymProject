@@ -16,19 +16,16 @@ public static class GlobalEventSystem
 
     }
 
-    //si registra alla specifica action dello specifico Evento, un action passato dall'esterno
     public static void AddListener(EventName eventToListen, Action<EventArgs> listener)
     {
         gameEvents[(int)eventToListen] += listener;
     }
 
-    //cosi come è possibile registrare un action, deve essere possibile anche rimuoverlo
     public static void RemoveListener(EventName eventToListen, Action<EventArgs> listener)
     {
         gameEvents[(int)eventToListen] -= listener;
     }
 
-    //Lancio l'action passandogli il nome dell'evento da lanciare e gli argomenti
     public static void CastEvent(EventName eventName, EventArgs message)
     {
         Debug.Log(eventName + EventArgsFactory.GetDebugString(eventName, message));
@@ -40,5 +37,7 @@ public static class GlobalEventSystem
 public enum EventName
 {
     LaunchPlayerStart,
-    LaunchPlayerStop
+    LaunchPlayerStop,
+    PlayerHealthUpdate,
+    PlayerDeath
 }
