@@ -23,8 +23,8 @@ public class PlayerMove : PlayerAbilityBase
         wasWalking = false;
         playerController.OnLaunchStarted += OnLaunchStarted;
         playerController.OnGroundLanded += OnGroundLanded;
-        playerController.OnIceStateEntered += OnIceStateEntered;
-        playerController.OnIceStateExited += OnIceStateExited;
+        //playerController.OnIceStateEntered += OnIceStateEntered;
+        //playerController.OnIceStateExited += OnIceStateExited;
     }
     private void OnDisable()
     {

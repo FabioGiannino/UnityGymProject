@@ -27,6 +27,7 @@ public class HealthModule
     {
         return !IsInvulnerable || IsAlive;
     }
+
     public void TakeDamage(DamageContainer damage)
     {
         if (!CanTakeDamage()) return;

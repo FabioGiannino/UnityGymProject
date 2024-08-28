@@ -1,0 +1,5 @@
+.iconStateEffects {
+    margin-right: 20px;
+    margin-left: 20px;
+    visibility: hidden;
+}

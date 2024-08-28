@@ -45,8 +45,6 @@ public class PlayerController : MonoBehaviour
     public Action OnWalkStarted { get; set; }
     public Action OnWalkEnded { get; set;}
     public bool IsWalking { get; set; }
-    public Action OnIceStateEntered;
-    public Action OnIceStateExited;
     #endregion
 
     #region Ability: Jump
@@ -72,6 +70,7 @@ public class PlayerController : MonoBehaviour
     private void InternalOnDamageTaken(DamageContainer damage)
     {
         StartCoroutine(StopInputCoroutine(timerInputDisableAfterHit));
+        /*
         switch (damage.DamageType)
         {
             case DamageType.NormalDamage:
@@ -93,6 +92,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Player ha preso Poison Damage: " + damage.DamageAmount);
                 break;
         }
+        */
     }
     #endregion
 
@@ -117,12 +117,14 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(freezeTime);
         EnableInputs();
     }
+    /*
     private IEnumerator IceStateCoroutine()
     {
         OnIceStateEntered?.Invoke();
         yield return new WaitForSeconds(10);
         OnIceStateExited?.Invoke(); 
     }
+    */
     #endregion
 
     #region Public Methods
@@ -133,8 +135,8 @@ public class PlayerController : MonoBehaviour
     /*Inscribe all actions to a simple debug.Log to see if they will correctly called*/
     private void DebugAbilities()
     {
-        OnWalkStarted += ()=> Debug.Log("OnWalkStarted Called");
-        OnWalkEnded += () => Debug.Log("OnWalkEnded Called");
+        //OnWalkStarted += ()=> Debug.Log("OnWalkStarted Called");
+        //OnWalkEnded += () => Debug.Log("OnWalkEnded Called");
         OnGroundLanded += () => Debug.Log("OnGroundLanded Called");
         OnGroundReleased += () => Debug.Log("OnGroundReleased Called");
         OnLaunchStarted += () => Debug.Log("OnLaunchStarted Called");
