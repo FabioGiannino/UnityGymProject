@@ -252,7 +252,7 @@ MonoBehaviour:
   playerTransform: {fileID: 8378842839905608990}
   playerRigidBody: {fileID: 7547371536723489340}
   playerPhysicsCollider: {fileID: 0}
-  timerInputDisableAfterHit: 0
+  timerInputDisableAfterHit: 0.5
 --- !u!1 &5469222952693744333
 GameObject:
   m_ObjectHideFlags: 0

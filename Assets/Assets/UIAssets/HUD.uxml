@@ -1,3 +1,3 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <HealthUI Max_Health="100" Current_Health="100" focusable="true" style="height: 10%; width: 20%; margin-top: 10px; margin-right: 0; margin-left: 20px;" />
+    <HealthUI Max_Health="100" Current_Health="100" focusable="true" name="HealthUI" style="height: 10%; width: 20%; margin-top: 10px; margin-right: 0; margin-left: 20px;" />
 </ui:UXML>

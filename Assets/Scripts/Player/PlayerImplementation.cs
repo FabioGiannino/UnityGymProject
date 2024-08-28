@@ -11,16 +11,20 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        healthModule.RestartHealth();
         healthModule.OnDamageTaken += OnDamageTaken;
+        RestartHealth();
     }
-
-
 
 
     #region HealthModule
     [SerializeField]
     private HealthModule healthModule;
+
+    private void RestartHealth()
+    {
+        healthModule.RestartHealth();
+        NotifyHealthUpdate();
+    }
 
     public void TakeDamage(DamageContainer damage)
     {
@@ -30,7 +34,7 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
     private void OnDamageTaken(DamageContainer damage)
     {
         playerController.OnDamageTaken?.Invoke(damage);
-        
+        NotifyHealthUpdate();
         //TODO
 
     }

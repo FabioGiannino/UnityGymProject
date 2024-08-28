@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
     #region Implementation: HealthModule
     public Action<DamageContainer> OnDamageTaken;
+    private Coroutine iceStateCoroutine;
     private void InternalOnDamageTaken(DamageContainer damage)
     {
         StartCoroutine(StopInputCoroutine(timerInputDisableAfterHit));
@@ -81,8 +82,12 @@ public class PlayerController : MonoBehaviour
                 break;
             case DamageType.IceDamage:
                 Debug.Log("Player ha preso Ice Damage: " + damage.DamageAmount);
-                OnIceStateEntered?.Invoke();
-                StartCoroutine(IceStateCoroutine());
+                if (iceStateCoroutine != null)
+                {
+                    StopCoroutine(iceStateCoroutine);
+                    OnIceStateExited?.Invoke();
+                }
+                iceStateCoroutine = StartCoroutine(IceStateCoroutine());
                 break;
             case DamageType.PoisonDamage:
                 Debug.Log("Player ha preso Poison Damage: " + damage.DamageAmount);
@@ -114,6 +119,7 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator IceStateCoroutine()
     {
+        OnIceStateEntered?.Invoke();
         yield return new WaitForSeconds(10);
         OnIceStateExited?.Invoke(); 
     }

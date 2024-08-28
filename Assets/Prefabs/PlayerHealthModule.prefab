@@ -59,13 +59,13 @@ PrefabInstance:
       propertyPath: playerPhysicsCollider
       value: 
       objectReference: {fileID: 807373179844966109}
-    - target: {fileID: 67086224212861527, guid: 7b9b7f65f133d394d934cea2080f00c6, type: 3}
-      propertyPath: timerInputDisableAfterHit
-      value: 1.5
+    - target: {fileID: 2248612879107580077, guid: 7b9b7f65f133d394d934cea2080f00c6, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3873837540427566686, guid: 7b9b7f65f133d394d934cea2080f00c6, type: 3}
       propertyPath: m_Name
-      value: PlayerTemplate Variant
+      value: PlayerHealthModule
       objectReference: {fileID: 0}
     - target: {fileID: 8378842839905608990, guid: 7b9b7f65f133d394d934cea2080f00c6, type: 3}
       propertyPath: m_LocalPosition.x
