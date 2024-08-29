@@ -10,12 +10,8 @@ public enum StateEffect
 
 public interface IAffectable
 {
-    Dictionary<StateEffect,float> GetCurrentStatesEffects();
 
-    Action OnIceEffectStarted {  get; set; }
-    Action OnIceEffectEnded { get; set;}    
-    Action OnFireEffectStarted { get; set; }
-    Action OnFireEffectEnded { get; set;}
-    Action OnPoisonEffectStarted { get;set; }
-    Action OnPoisonEffectEnded { get;set; }
+    void Init();
+    void OnStateEntered(StateEffect effect);
+    void OnStateExited(StateEffect effect);
 }

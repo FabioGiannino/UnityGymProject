@@ -7,6 +7,59 @@ using UnityEngine;
 public class StateEffectsModule
 {
     [SerializeField]
+    List<BaseStates> states;
+
+    public List<BaseStates> States { get { return states; } }
+
+    public void Init()
+    {
+        foreach (var state in states)
+        {
+            state.ResetLevel();
+        }
+    }
+
+    public BaseStates GetState(StateEffect stateName)
+    {
+        return states.Find(state => state.StateName == stateName);
+    }
+
+    public float GetCurrentLevel(StateEffect stateName)
+    {
+        return GetState(stateName).CurrentLevel;        
+    }
+    
+   
+
+
+    public void TakeDamage(DamageContainer damage)
+    {
+        BaseStates state;
+        switch (damage.DamageType)
+        {
+            case DamageType.IceDamage:
+                state = GetState(StateEffect.Cold);
+                break;
+            case DamageType.FireDamage:
+                state = GetState(StateEffect.Fire);
+                break;
+            case DamageType.PoisonDamage:
+                state = GetState(StateEffect.Poison);
+                break;
+            default:
+                return;
+        }
+        state.CurrentLevel += damage.DamageAmount;
+        if(state.IsAffected)
+            state.OnStateEntered();
+    }
+
+}
+/*
+[Serializable]
+public class StateEffectsModule
+{
+    [SerializeField]
     private float maxToleranceIce;
     [SerializeField]
     private float maxToleranceFire;
@@ -23,12 +76,11 @@ public class StateEffectsModule
     private float currentFireLevel;
     private float currentPoisonLevel;
 
+    
+
 
     public float IceStateTimer { get { return iceStateTimer; } }
 
-    public float CurrentIceLevel { get { return currentIceLevel; } }
-    public float CurrentFireLevel { get { return currentFireLevel; } }
-    public float CurrentPoisonLevel { get { return currentPoisonLevel; } }
 
     public bool IsFrozen { get { return currentIceLevel > maxToleranceIce; } }
     public bool IsFired { get { return currentFireLevel > maxToleranceFire; } }
@@ -90,7 +142,5 @@ public class StateEffectsModule
         }
     }
 
-    
-
-
 }
+*/

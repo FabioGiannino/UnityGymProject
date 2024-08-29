@@ -302,8 +302,20 @@ PrefabInstance:
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: stateEffectsModule.states.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
       propertyPath: stateEffectsModule.maxTolerancePoison
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: stateEffectsModule.states.Array.data[0].stateTimer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: stateEffectsModule.states.Array.data[0].maxTolerance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5202498908236988343, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
       propertyPath: m_Name
