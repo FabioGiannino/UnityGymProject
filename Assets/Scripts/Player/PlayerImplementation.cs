@@ -7,10 +7,13 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
 {
     [SerializeField]
     private PlayerController playerController;
+    
 
     private void Start()
     {
         healthModule.OnDamageTaken += OnDamageTaken;
+        stateEffectsModule.OnFrozenStateEntered += OnFrozenStateEntered;
+        stateEffectsModule.OnFrozenStateFinished += OnFrozenStateFinished;
         RestartHealth();
         RestartStates();
         DebugStatesEffects();
@@ -53,6 +56,11 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
     #region StateEffects    
     [SerializeField]
     private StateEffectsModule stateEffectsModule;
+
+    private Coroutine iceCoroutine;
+    private Coroutine fireCoroutine;
+    private Coroutine poisonCoroutine;
+
     private void RestartStates()
     {
         stateEffectsModule.ResetFireLevel();
@@ -60,6 +68,41 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
         stateEffectsModule.ResetPoisonLevel();
     }
 
+
+    private void OnFrozenStateEntered()
+    {
+        if (iceCoroutine != null)
+        {
+            StopCoroutine(iceCoroutine);
+            iceCoroutine = null;
+        }
+        else
+        {
+            playerController.OnFrozenStateEntered?.Invoke();    //don't slow the player for multiples times
+        }
+        iceCoroutine = StartCoroutine(StateEffectCoroutine(stateEffectsModule.IceStateTimer,stateEffectsModule.OnFrozenStateFinished));
+        NotifyStateUpdate(StateEffect.Cold);
+    }
+    private void OnFrozenStateFinished()
+    {
+        stateEffectsModule.ResetIceLevel();
+        playerController.OnFrozenStateFinished?.Invoke();
+        NotifyStateUpdate(StateEffect.Cold);
+        iceCoroutine = null;
+    }
+
+    private void NotifyStateUpdate(StateEffect state)
+    {
+        //TODO: Creare l'evento per il global event system
+    }
+
+    private IEnumerator StateEffectCoroutine(float time, Action exitAction)
+    {
+        yield return new WaitForSeconds(time);
+        exitAction?.Invoke();
+    }
+
+    #region DEBUG LOG
     private void DebugStatesEffects()
     {
         stateEffectsModule.OnFiredStateEntered += () => { Debug.Log("Player IS ON FIRE!"); };
@@ -70,8 +113,7 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
         stateEffectsModule.OnFrozenStateFinished += () => { Debug.Log("Player is no more frozen...");};
         stateEffectsModule.OnPoisonedStateFinished += () => { Debug.Log("Player is no more poisoned..."); };
     }
-
-
+    #endregion
     #endregion
 
 }

@@ -23,8 +23,8 @@ public class PlayerMove : PlayerAbilityBase
         wasWalking = false;
         playerController.OnLaunchStarted += OnLaunchStarted;
         playerController.OnGroundLanded += OnGroundLanded;
-        //playerController.OnIceStateEntered += OnIceStateEntered;
-        //playerController.OnIceStateExited += OnIceStateExited;
+        playerController.OnFrozenStateEntered += OnFrozenStateEntered;
+        playerController.OnFrozenStateFinished += OnFrozenStateExited;
     }
     private void OnDisable()
     {
@@ -110,11 +110,11 @@ public class PlayerMove : PlayerAbilityBase
     {
         isPrevented = false;
     }
-    private void OnIceStateEntered()
+    private void OnFrozenStateEntered()
     {
         currentMaxSpeed = currentMaxSpeed * 0.5f;
     }
-    private void OnIceStateExited()
+    private void OnFrozenStateExited()
     {
         currentMaxSpeed = maxSpeed;
     }

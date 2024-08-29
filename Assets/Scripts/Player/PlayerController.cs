@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         }
         DebugAbilities();
 
-        OnDamageTaken += InternalOnDamageTaken;
+        InitHealthModule();
     }
     #endregion
 
@@ -67,6 +67,10 @@ public class PlayerController : MonoBehaviour
     #region Implementation: HealthModule
     public Action<DamageContainer> OnDamageTaken;
     private Coroutine iceStateCoroutine;
+    private void InitHealthModule()
+    {
+        OnDamageTaken += InternalOnDamageTaken;
+    }
     private void InternalOnDamageTaken(DamageContainer damage)
     {
         StartCoroutine(StopInputCoroutine(timerInputDisableAfterHit));
@@ -94,6 +98,12 @@ public class PlayerController : MonoBehaviour
         }
         */
     }
+    #endregion
+
+
+    #region Implementation: StateEffectsModule
+    public Action OnFrozenStateEntered;
+    public Action OnFrozenStateFinished;
     #endregion
 
     #region InternalMethods

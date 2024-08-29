@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,10 +12,19 @@ public class StateEffectsModule
     private float maxToleranceFire;
     [SerializeField]
     private float maxTolerancePoison;
+    [SerializeField]
+    private float iceStateTimer;
+    [SerializeField]
+    private float fireStateTimer;
+    [SerializeField]
+    private float poisonStateTimer;
 
     private float currentIceLevel;
     private float currentFireLevel;
     private float currentPoisonLevel;
+
+
+    public float IceStateTimer { get { return iceStateTimer; } }
 
     public float CurrentIceLevel { get { return currentIceLevel; } }
     public float CurrentFireLevel { get { return currentFireLevel; } }
@@ -62,7 +72,7 @@ public class StateEffectsModule
             case DamageType.FireDamage:
                 currentFireLevel += damage.DamageAmount;
                 if (IsFired)
-                    OnFiredStateEntered?.Invoke();
+                    OnFiredStateEntered?.Invoke();                
                 break;
             case DamageType.IceDamage:         
                 currentIceLevel += damage.DamageAmount;
@@ -79,4 +89,8 @@ public class StateEffectsModule
                 return;
         }
     }
+
+    
+
+
 }

@@ -290,8 +290,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: stateEffectsModule.iceStateTimer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
       propertyPath: stateEffectsModule.maxToleranceIce
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
       propertyPath: stateEffectsModule.maxToleranceFire
