@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public static class GlobalEventSystem
 {
     private static Action<EventArgs>[] gameEvents;
@@ -39,5 +38,6 @@ public enum EventName
     LaunchPlayerStart,
     LaunchPlayerStop,
     PlayerHealthUpdate,
-    PlayerDeath
+    PlayerDeath,
+    PlayerUpdateState
 }

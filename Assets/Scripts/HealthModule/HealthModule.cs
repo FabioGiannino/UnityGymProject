@@ -25,7 +25,7 @@ public class HealthModule
 
     private bool CanTakeDamage()
     {
-        return !IsInvulnerable || IsAlive;
+        return !IsInvulnerable && IsAlive;
     }
 
     public void TakeDamage(DamageContainer damage)

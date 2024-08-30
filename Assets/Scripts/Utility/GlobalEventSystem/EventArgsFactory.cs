@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public static class EventArgsFactory 
@@ -16,6 +17,7 @@ public static class EventArgsFactory
         methodDebugString.Add(EventName.LaunchPlayerStop, new EventDebug(LaunchPlayerStopDebug));
         methodDebugString.Add(EventName.PlayerHealthUpdate, new EventDebug(PlayerHealthUpdateDebug));
         methodDebugString.Add(EventName.PlayerDeath, new EventDebug(PlayerDeathDebug)); 
+        methodDebugString.Add(EventName.PlayerUpdateState, new EventDebug(PlayerUpdateStateDebug));
     }
 
     public static string GetDebugString(EventName eventType, EventArgs message)
@@ -99,4 +101,25 @@ public static class EventArgsFactory
     }
     #endregion
 
+    #region PlayerUpdateState
+    public static EventArgs PlayerUpdateStateFactory(StateEffect stateName, bool isAffected)
+    {
+        EventArgs message = new EventArgs();
+        message.variables = new object[2];
+        message.variables[0]=stateName;
+        message.variables[1]=isAffected;
+        return message;
+    }
+    public static void PlayerUpdateStateParser(EventArgs message,out StateEffect stateName, out bool isAffected)
+    {
+        stateName = (StateEffect)message.variables[0];
+        isAffected = (bool)message.variables[1];
+    }
+    public static string PlayerUpdateStateDebug(EventArgs message)
+    {
+        return "PlayerUpdateState Called: State "+ message.variables[0].ToString() +" - " + message.variables[1].ToString();
+    }
+    #endregion
+
+   
 }
