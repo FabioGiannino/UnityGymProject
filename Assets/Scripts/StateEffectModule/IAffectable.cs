@@ -1,12 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-public enum StateEffect
-{
-    Cold,
-    Fire,
-    Poison
-}
 
 public interface IAffectable
 {
