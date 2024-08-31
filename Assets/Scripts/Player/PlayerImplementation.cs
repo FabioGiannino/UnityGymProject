@@ -54,181 +54,66 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
 
     #endregion
 
-    #region StateEffects
-
+    #region StateEffectModule
     [SerializeField]
     private StateEffectsModule stateEffectsModule;
 
-    private Coroutine iceCoroutine;
-    BaseStates fireState, frozenState, poisonState;
 
     private void InitStateEffectsModule()
     {
-        fireState = stateEffectsModule.GetState(StateEffect.Fire);
-        frozenState = stateEffectsModule.GetState(StateEffect.Cold);
-        poisonState = stateEffectsModule.GetState(StateEffect.Poison);
-        if (fireState != null)
-        {
-            fireState.OnStateEntered += OnFiredStateEntered;
-            fireState.OnStateFinished += OnFiredStateFinished;
-        }
-        if (frozenState != null)
-        {
-            frozenState.OnStateEntered += OnFrozenStateEntered;
-            frozenState.OnStateFinished += OnFrozenStateFinished;
-        }
-        if (poisonState != null)
-        {
-            poisonState.OnStateEntered += OnPoisonedStateEntered;
-            poisonState.OnStateFinished += OnPoisonedStateFinished;
-        }
-        RestartStates();
-        DebugStatesEffects();
-    }
-
-    private void RestartStates()
-    {
+        stateEffectsModule.Init(this);
         foreach (var state in stateEffectsModule.States)
         {
-            state.ResetLevel();
+            switch (state.StateName)
+            {
+                case StateEffect.Cold:
+                    state.OnStateEntered += InternalColdStateEntered;
+                    state.OnStateFinished += InternalColdStateFinished;
+                    break;
+                case StateEffect.Fire:
+                    state.OnStateEntered += InternalFireStateEntered;
+                    state.OnStateFinished += InternalFireStateFinished;
+                    break;
+                case StateEffect.Poison:
+                    state.OnStateEntered += InternalPoisonStateEntered;
+                    state.OnStateFinished += InternalPoisonStateFinished;
+                    break;
+                default:
+                    return;
+            }
         }
     }
-    #region State: Frozen
-    private void OnFrozenStateEntered()
+
+    private void InternalColdStateEntered()
     {
-        if (iceCoroutine != null)
-        {
-            StopCoroutine(iceCoroutine);
-            iceCoroutine = null;
-        }
-        else
-        {
-            playerController.OnFrozenStateEntered?.Invoke();    //don't slow the player for multiples times
-        }
-        iceCoroutine = StartCoroutine(StateEffectCoroutine(stateEffectsModule.GetState(StateEffect.Cold).StateTimer
-                                , stateEffectsModule.GetState(StateEffect.Cold).OnStateFinished));
-        NotifyStateUpdate(StateEffect.Cold);
+        playerController.OnFrozenStateEntered?.Invoke();
+        NotifyStateUpdate(StateEffect.Cold, true);
     }
-    private void OnFrozenStateFinished()
+    private void InternalColdStateFinished()
     {
-        stateEffectsModule.GetState(StateEffect.Cold).ResetLevel();
         playerController.OnFrozenStateFinished?.Invoke();
-        NotifyStateUpdate(StateEffect.Cold);
-        iceCoroutine = null;
+        NotifyStateUpdate(StateEffect.Cold, false);
+    }
+    private void InternalFireStateEntered()
+    {
+        NotifyStateUpdate(StateEffect.Fire, true);
+    }
+    private void InternalFireStateFinished()
+    {
+        NotifyStateUpdate(StateEffect.Fire, false);
+    }
+    private void InternalPoisonStateEntered()
+    {
+        NotifyStateUpdate(StateEffect.Poison, true);
+    }
+    private void InternalPoisonStateFinished()
+    {
+        NotifyStateUpdate(StateEffect.Poison, false);
+    }
+
+    private void NotifyStateUpdate(StateEffect state, bool isAffected)
+    {
+        GlobalEventSystem.CastEvent(EventName.PlayerUpdateState, EventArgsFactory.PlayerUpdateStateFactory(state, isAffected));
     }
     #endregion
-
-    #region State: Fired
-    private void OnFiredStateEntered()
-    {
-
-    }
-    private void OnFiredStateFinished()
-    {
-
-    }
-    #endregion
-
-    #region State: Poisoned
-    private void OnPoisonedStateEntered()
-    {
-
-    }
-    private void OnPoisonedStateFinished()
-    {
-
-    }
-    #endregion
-    private void NotifyStateUpdate(StateEffect state)
-    {
-        //TODO: Creare l'evento per il global event system
-    }
-
-    private IEnumerator StateEffectCoroutine(float time, Action exitAction)
-    {
-        yield return new WaitForSeconds(time);
-        exitAction?.Invoke();
-    }
-    private void DebugStatesEffects()
-    {
-        if (fireState != null)
-        {
-            fireState.OnStateEntered += () => { Debug.Log("Player IS ON FIRE!"); };
-            fireState.OnStateFinished += () => { Debug.Log("Player is no more on fire..."); };
-        }
-        if (frozenState != null)
-        {
-            frozenState.OnStateEntered += () => { Debug.Log("Player IS FROZEN!"); };
-            frozenState.OnStateFinished += () => { Debug.Log("Player is no more frozen..."); };
-        }
-        if (poisonState != null)
-        {
-            poisonState.OnStateEntered += () => { Debug.Log("Player IS POISONED"); };
-            poisonState.OnStateFinished += () => { Debug.Log("Player is no more poisoned..."); };
-        }
-    }
-
-    /*
-    private Coroutine iceCoroutine;
-    private Coroutine fireCoroutine;
-    private Coroutine poisonCoroutine;
-
-    private void RestartStates()
-    {
-        stateEffectsModule.ResetFireLevel();
-        stateEffectsModule.ResetIceLevel();
-        stateEffectsModule.ResetPoisonLevel();
-    }
-
-
-    private void OnFrozenStateEntered()
-    {
-        if (iceCoroutine != null)
-        {
-            StopCoroutine(iceCoroutine);
-            iceCoroutine = null;
-        }
-        else
-        {
-            playerController.OnFrozenStateEntered?.Invoke();    //don't slow the player for multiples times
-        }
-        iceCoroutine = StartCoroutine(StateEffectCoroutine(stateEffectsModule.IceStateTimer,stateEffectsModule.OnFrozenStateFinished));
-        NotifyStateUpdate(StateEffect.Cold);
-    }
-    private void OnFrozenStateFinished()
-    {
-        stateEffectsModule.ResetIceLevel();
-        playerController.OnFrozenStateFinished?.Invoke();
-        NotifyStateUpdate(StateEffect.Cold);
-        iceCoroutine = null;
-    }
-
-    private void NotifyStateUpdate(StateEffect state)
-    {
-        //TODO: Creare l'evento per il global event system
-    }
-
-    private IEnumerator StateEffectCoroutine(float time, Action exitAction)
-    {
-        yield return new WaitForSeconds(time);
-        exitAction?.Invoke();
-    }
-
-    #region DEBUG LOG
-    private void DebugStatesEffects()
-    {
-        stateEffectsModule.OnFiredStateEntered += () => { Debug.Log("Player IS ON FIRE!"); };
-        stateEffectsModule.OnFrozenStateEntered += () => { Debug.Log("Player IS FROZEN!"); };
-        stateEffectsModule.OnPoisonedStateEntered += () => { Debug.Log("Player IS POISONED"); };
-
-        stateEffectsModule.OnFiredStateFinished += () => { Debug.Log("Player is no more on fire..."); };
-        stateEffectsModule.OnFrozenStateFinished += () => { Debug.Log("Player is no more frozen...");};
-        stateEffectsModule.OnPoisonedStateFinished += () => { Debug.Log("Player is no more poisoned..."); };
-    }
-    #endregion
-
-
-    */
-    #endregion
-
 }

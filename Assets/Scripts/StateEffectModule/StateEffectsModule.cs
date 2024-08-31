@@ -7,19 +7,21 @@ using UnityEngine;
 public class StateEffectsModule
 {
     [SerializeField]
-    List<BaseStates> states;
+    List<BaseState> states;
 
-    public List<BaseStates> States { get { return states; } }
+    public List<BaseState> States { get { return states; } }
 
-    public void Init()
+    private MonoBehaviour controller;
+    public void Init(MonoBehaviour controller)
     {
+        this.controller = controller;
         foreach (var state in states)
         {
             state.ResetLevel();
         }
     }
 
-    public BaseStates GetState(StateEffect stateName)
+    public BaseState GetState(StateEffect stateName)
     {
         return states.Find(state => state.StateName == stateName);
     }
@@ -28,32 +30,32 @@ public class StateEffectsModule
     {
         return GetState(stateName).CurrentLevel;        
     }
-    
-   
-
 
     public void TakeDamage(DamageContainer damage)
     {
-        BaseStates state;
-        switch (damage.DamageType)
-        {
-            case DamageType.IceDamage:
-                state = GetState(StateEffect.Cold);
-                break;
-            case DamageType.FireDamage:
-                state = GetState(StateEffect.Fire);
-                break;
-            case DamageType.PoisonDamage:
-                state = GetState(StateEffect.Poison);
-                break;
-            default:
-                return;
-        }
-        state.CurrentLevel += damage.DamageAmount;
-        if(state.IsAffected)
-            state.OnStateEntered();
+        StateEffect stateEffect = GetStateEffectFromDamage(damage.DamageType);
+        BaseState state = GetState(stateEffect);
+        if (state == null) return;
+        bool wasAffected = state.IsAffected;
+        state.UpdateLevelState(damage.DamageAmount);
+        if (!wasAffected && state.IsAffected)
+            controller.StartCoroutine(state.Recovery());
     }
 
+    private StateEffect GetStateEffectFromDamage(DamageType damagetype)
+    {
+        switch (damagetype)
+        {
+            case DamageType.IceDamage:
+                return StateEffect.Cold;
+            case DamageType.FireDamage:
+                return StateEffect.Fire;
+            case DamageType.PoisonDamage:
+                return StateEffect.Poison;
+            default:
+                return 0;
+        }
+    }
 }
 /*
 [Serializable]

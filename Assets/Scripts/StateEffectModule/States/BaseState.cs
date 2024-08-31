@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class BaseStates 
+public class BaseState 
 {
     [SerializeField]
     protected float maxTolerance;
@@ -26,4 +26,21 @@ public class BaseStates
     {
         currentLevel = 0;
     }
+    public void UpdateLevelState(float levelAmount)
+    {
+        bool wasAffected = IsAffected;
+        currentLevel += levelAmount;
+        if (!wasAffected && IsAffected)
+        {
+            OnStateEntered?.Invoke();
+        }
+    }
+
+    public IEnumerator Recovery()
+    {
+        yield return new WaitForSeconds(stateTimer);
+        OnStateFinished?.Invoke();
+        ResetLevel();
+    }
+
 }
