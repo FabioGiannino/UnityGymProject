@@ -66,13 +66,22 @@ public class PlayerController : MonoBehaviour
 
     #region Implementation: HealthModule
     public Action<DamageContainer> OnDamageTaken;
+    public Action OnDeath;
+    public bool IsDeath { get; set; }
     private void InitHealthModule()
     {
         OnDamageTaken += InternalOnDamageTaken;
+        OnDeath += InternalOnDeath;
     }
     private void InternalOnDamageTaken(DamageContainer damage)
     {
         StartCoroutine(StopInputCoroutine(timerInputDisableAfterHit));
+    }
+    private void InternalOnDeath()
+    {
+        DisableInputs();
+        StopAllCoroutines();
+        //playervisual for animations
     }
     #endregion
 

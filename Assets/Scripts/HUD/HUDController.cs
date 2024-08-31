@@ -8,11 +8,15 @@ public class HUDController : MonoBehaviour
     private HealthUI healthUI;
 
     private VisualElement iceIcon;
+    private VisualElement fireIcon;
+    private VisualElement poisonIcon;
 
     private void Awake()
     {
         healthUI = GetComponent<UIDocument>().rootVisualElement.Q<HealthUI>("HealthUI");
         iceIcon = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("IceIcon");
+        fireIcon = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("FireIcon");
+        poisonIcon = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("PoisonIcon");
     }
 
     private void OnEnable()
@@ -26,7 +30,7 @@ public class HUDController : MonoBehaviour
         GlobalEventSystem.RemoveListener(EventName.PlayerUpdateState, UpdateStateListener);
     }
 
-
+    #region HealthUI
     private void HealthUpdateListener(EventArgs message)
     {
         EventArgsFactory.PlayerHealthUpdateParser(message, out float maxHP, out float currentHP);
@@ -36,16 +40,32 @@ public class HUDController : MonoBehaviour
         }
         healthUI.CurrentHealth = currentHP;
     }
+    #endregion
+
+    #region StateUI
     private void UpdateStateListener(EventArgs message)
     {
         EventArgsFactory.PlayerUpdateStateParser(message, out StateEffect stateName, out bool isAffected);
-        if (isAffected)
+        VisualElement icon = GetIcon(stateName);
+        if(isAffected)
         {
-            iceIcon.visible = true;
+            icon.visible = true;
         }
         else
         {
-            iceIcon.visible = false;
+            icon.visible = false;
         }
     }
+
+    private VisualElement GetIcon(StateEffect stateEffect)
+    {
+        switch (stateEffect)
+        {
+            case StateEffect.Cold: return iceIcon;
+            case StateEffect.Poison: return poisonIcon;
+            case StateEffect.Fire: return fireIcon;
+            default: return null;
+        }
+    }
+    #endregion
 }
