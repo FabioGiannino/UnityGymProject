@@ -21,15 +21,15 @@ public class LaunchUI : MonoBehaviour
     }
 
     #region Callbacks
-    private void LaunchStartListener(EventArgs message)
+    private void LaunchStartListener(GlobalEventArgs message)
     {
         canvas.enabled = true;
-        EventArgsFactory.LaunchPlayerStartParser(message, out float maxInputEvaluate);
+        GlobalEventArgsFactory.LaunchPlayerStartParser(message, out float maxInputEvaluate);
         factor = 1.0f/ maxInputEvaluate;
         LaunchUICoroutine = StartCoroutine(LaunchBarCoroutine(maxInputEvaluate));
 
     }
-    private void LaunchStopListener(EventArgs message)
+    private void LaunchStopListener(GlobalEventArgs message)
     {
         canvas.enabled = false;
         launchScrollbar.size = 0;

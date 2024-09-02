@@ -59,7 +59,7 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
     }
     private void NotifyHealthUpdate()
     {
-        GlobalEventSystem.CastEvent(EventName.PlayerHealthUpdate, EventArgsFactory.PlayerHealthUpdateFactory(healthModule.MaxHealth, healthModule.CurrentHealth));
+        GlobalEventSystem.CastEvent(EventName.PlayerHealthUpdate, GlobalEventArgsFactory.PlayerHealthUpdateFactory(healthModule.MaxHealth, healthModule.CurrentHealth));
     }
     private void SetInvulnerable(float invulnerabilityTime)
     {
@@ -106,24 +106,28 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
                 default:
                     return;
             }
+            state.OnLevelStateUpdate += InternalOnLevelStateUpdate;
         }
+    }
+
+    private void InternalOnLevelStateUpdate(BaseState state, float currentLevel)
+    {
+        float cc = state.CurrentLevel/state.MaxTolerance;
+        NotifyStateUpdate(state.StateName, cc);
     }
 
     private void InternalColdStateEntered()
     {
         playerController.OnFrozenStateEntered?.Invoke();
-        NotifyStateUpdate(StateEffect.Cold, true);
     }
     private void InternalColdStateFinished()
     {
         playerController.OnFrozenStateFinished?.Invoke();
-        NotifyStateUpdate(StateEffect.Cold, false);
     }
     private void InternalFireStateEntered()
     {
         float timer = stateEffectsModule.GetState(StateEffect.Fire).StateTimer;
-        firedCoroutine = StartCoroutine(FiredCoroutine(timer));        
-        NotifyStateUpdate(StateEffect.Fire, true);
+        firedCoroutine = StartCoroutine(FiredCoroutine(timer));
     }
     private void InternalFireStateFinished()
     {
@@ -132,15 +136,13 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
             StopCoroutine(firedCoroutine);
             firedCoroutine = null;
         }
-        NotifyStateUpdate(StateEffect.Fire, false);
     }
     private void InternalPoisonStateEntered()
     {
-        NotifyStateUpdate(StateEffect.Poison, true);
     }
     private void InternalPoisonStateFinished()
     {
-        NotifyStateUpdate(StateEffect.Poison, false);
+     
     }
 
     public IEnumerator FiredCoroutine(float timer)
@@ -154,9 +156,9 @@ public class PlayerImplementation : MonoBehaviour, IDamageable
     }
 
 
-    private void NotifyStateUpdate(StateEffect state, bool isAffected)
+    private void NotifyStateUpdate(StateEffect state, float stateLevel)
     {
-        GlobalEventSystem.CastEvent(EventName.PlayerUpdateState, EventArgsFactory.PlayerUpdateStateFactory(state, isAffected));
+        GlobalEventSystem.CastEvent(EventName.PlayerUpdateLevelState,GlobalEventArgsFactory.PlayerUpdateLevelStateFactory(state,stateLevel));
     }
     #endregion
 }

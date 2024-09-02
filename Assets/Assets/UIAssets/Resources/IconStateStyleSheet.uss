@@ -1,5 +1,8 @@
 .iconStateEffects {
     margin-right: 20px;
     margin-left: 20px;
-    visibility: hidden;
+    visibility: visible;
+    align-self: flex-end;
+    width: 50px;
+    height: 0;
 }

@@ -257,6 +257,14 @@ PrefabInstance:
       propertyPath: postDamageInvulnerabilityTime
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 331879877947446918, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
+      propertyPath: stateEffectsModule.states.Array.data[0].levelRecoveredPerSecond
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 331879877947446918, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
+      propertyPath: stateEffectsModule.states.Array.data[1].levelRecoveredPerSecond
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1439627315700743852, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09613562

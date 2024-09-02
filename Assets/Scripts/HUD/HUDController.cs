@@ -22,39 +22,36 @@ public class HUDController : MonoBehaviour
     private void OnEnable()
     {
         GlobalEventSystem.AddListener(EventName.PlayerHealthUpdate, HealthUpdateListener);
-        GlobalEventSystem.AddListener(EventName.PlayerUpdateState, UpdateStateListener);
+        GlobalEventSystem.AddListener(EventName.PlayerUpdateLevelState, UpdateStateListener);
     }
     private void OnDisable()
     {
         GlobalEventSystem.RemoveListener(EventName.PlayerHealthUpdate, HealthUpdateListener);
-        GlobalEventSystem.RemoveListener(EventName.PlayerUpdateState, UpdateStateListener);
+        GlobalEventSystem.RemoveListener(EventName.PlayerUpdateLevelState, UpdateStateListener);
     }
 
     #region HealthUI
-    private void HealthUpdateListener(EventArgs message)
+    private void HealthUpdateListener(GlobalEventArgs message)
     {
-        EventArgsFactory.PlayerHealthUpdateParser(message, out float maxHP, out float currentHP);
+        GlobalEventArgsFactory.PlayerHealthUpdateParser(message, out float maxHP, out float currentHP);
         if (!(healthUI.MaxHealth == maxHP))
         {
             healthUI.MaxHealth = maxHP;
         }
+        currentHP = Mathf.Clamp(currentHP, 0.0f, maxHP);
         healthUI.CurrentHealth = currentHP;
     }
     #endregion
 
     #region StateUI
-    private void UpdateStateListener(EventArgs message)
+    private void UpdateStateListener(GlobalEventArgs message)
     {
-        EventArgsFactory.PlayerUpdateStateParser(message, out StateEffect stateName, out bool isAffected);
+        GlobalEventArgsFactory.PlayerUpdateLevelStateParser(message, out StateEffect stateName, out float stateLevelInPercentage);
         VisualElement icon = GetIcon(stateName);
-        if(isAffected)
-        {
-            icon.visible = true;
-        }
-        else
-        {
-            icon.visible = false;
-        }
+        stateLevelInPercentage = Mathf.Clamp(stateLevelInPercentage, 0.0f, 1.0f);
+        icon.style.height = Length.Percent(stateLevelInPercentage*100);
+        
+
     }
 
     private VisualElement GetIcon(StateEffect stateEffect)

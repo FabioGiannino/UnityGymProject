@@ -48,7 +48,7 @@ public class PlayerLaunch : PlayerAbilityBase
         if (!CanBeLaunched()) return;
         Time.timeScale = 0;
         playerController.PlayerRigidBody.velocity = Vector2.zero;
-        GlobalEventSystem.CastEvent(EventName.LaunchPlayerStart, EventArgsFactory.LaunchPlayerStartFactory(maxEvaluationInputTime));
+        GlobalEventSystem.CastEvent(EventName.LaunchPlayerStart, GlobalEventArgsFactory.LaunchPlayerStartFactory(maxEvaluationInputTime));
         launchCoroutine = StartCoroutine(LaunchCoroutine());
     }
     #endregion
@@ -72,7 +72,7 @@ public class PlayerLaunch : PlayerAbilityBase
         Time.timeScale = 1;
         playerController.PlayerRigidBody.AddForce(forceVector, ForceMode2D.Impulse);
         playerController.OnLaunchStarted?.Invoke();
-        GlobalEventSystem.CastEvent(EventName.LaunchPlayerStop, EventArgsFactory.LaunchPlayerStopFactory());
+        GlobalEventSystem.CastEvent(EventName.LaunchPlayerStop, GlobalEventArgsFactory.LaunchPlayerStopFactory());
     }
     #endregion
 

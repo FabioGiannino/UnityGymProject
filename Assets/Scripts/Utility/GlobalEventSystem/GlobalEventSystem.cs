@@ -5,29 +5,29 @@ using UnityEngine;
 
 public static class GlobalEventSystem
 {
-    private static Action<EventArgs>[] gameEvents;
+    private static Action<GlobalEventArgs>[] gameEvents;
 
     /*creo l'array di actions dandogli come lunghezza il numero di possibili eventi definiti in EventName
           (Enum.GetValues(typeof(EventName)).Length -> è il numero di elementi definiti nell'enum)*/
     static GlobalEventSystem()
     {
-        gameEvents = new Action<EventArgs>[Enum.GetValues(typeof(EventName)).Length];
+        gameEvents = new Action<GlobalEventArgs>[Enum.GetValues(typeof(EventName)).Length];
 
     }
 
-    public static void AddListener(EventName eventToListen, Action<EventArgs> listener)
+    public static void AddListener(EventName eventToListen, Action<GlobalEventArgs> listener)
     {
         gameEvents[(int)eventToListen] += listener;
     }
 
-    public static void RemoveListener(EventName eventToListen, Action<EventArgs> listener)
+    public static void RemoveListener(EventName eventToListen, Action<GlobalEventArgs> listener)
     {
         gameEvents[(int)eventToListen] -= listener;
     }
 
-    public static void CastEvent(EventName eventName, EventArgs message)
+    public static void CastEvent(EventName eventName, GlobalEventArgs message)
     {
-        Debug.Log(eventName + EventArgsFactory.GetDebugString(eventName, message));
+        Debug.Log(eventName + GlobalEventArgsFactory.GetDebugString(eventName, message));
         gameEvents[(int)eventName]?.Invoke(message);
     }
 
@@ -39,5 +39,5 @@ public enum EventName
     LaunchPlayerStop,
     PlayerHealthUpdate,
     PlayerDeath,
-    PlayerUpdateState
+    PlayerUpdateLevelState
 }

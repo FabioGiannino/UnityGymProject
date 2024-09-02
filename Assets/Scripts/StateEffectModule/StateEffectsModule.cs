@@ -1,3 +1,4 @@
+using Codice.Client.BaseCommands;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,12 +7,15 @@ using UnityEngine;
 [Serializable]
 public class StateEffectsModule
 {
+    private const float timeToStartRecovery = 1.0f;
+
     [SerializeField]
     List<BaseState> states;
 
     public List<BaseState> States { get { return states; } }
 
     private MonoBehaviour controller;
+
     public void Init(MonoBehaviour controller)
     {
         this.controller = controller;
@@ -36,10 +40,23 @@ public class StateEffectsModule
         StateEffect stateEffect = GetStateEffectFromDamage(damage.DamageType);
         BaseState state = GetState(stateEffect);
         if (state == null) return;
-        bool wasAffected = state.IsAffected;
+
         state.UpdateLevelState(damage.DamageAmount);
-        if (!wasAffected && state.IsAffected)
-            controller.StartCoroutine(state.Recovery());
+        if (state.IsAffected)
+        {
+            StopRecoveryCoroutine(state);
+            state.RecoveryCoroutine = controller.StartCoroutine(WaitStateEffectTimer(state));
+            return;
+        }
+        StopRecoveryCoroutine(state);
+        state.RecoveryCoroutine = controller.StartCoroutine(WaitForRecovery(state));
+    }
+
+    private void StopRecoveryCoroutine(BaseState state)
+    {
+        if (state.RecoveryCoroutine == null) return;
+        controller.StopCoroutine(state.RecoveryCoroutine);
+        state.RecoveryCoroutine = null;
     }
 
     private StateEffect GetStateEffectFromDamage(DamageType damagetype)
@@ -55,6 +72,19 @@ public class StateEffectsModule
             default:
                 return 0;
         }
+    }
+
+    private IEnumerator WaitForRecovery(BaseState state)
+    {
+        yield return new WaitForSeconds(timeToStartRecovery);
+        state.RecoveryCoroutine = controller.StartCoroutine(state.Recovery());
+    }
+
+    private IEnumerator WaitStateEffectTimer(BaseState state)
+    {
+        yield return new WaitForSeconds(state.StateTimer);
+        state.OnStateFinished?.Invoke();
+        state.RecoveryCoroutine = controller.StartCoroutine(state.Recovery());
     }
 }
 /*

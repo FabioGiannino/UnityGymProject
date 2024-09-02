@@ -1,4 +1,4 @@
-public class EventArgs
+public class GlobalEventArgs
 {
     public object[] variables;
 }
