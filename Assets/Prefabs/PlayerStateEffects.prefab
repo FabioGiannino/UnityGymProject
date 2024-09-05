@@ -49,6 +49,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: fireDamageTimer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: postDamageInvulnerabilityTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
       propertyPath: stateEffectsModule.iceStateTimer
       value: 5
       objectReference: {fileID: 0}
@@ -92,9 +100,21 @@ PrefabInstance:
       propertyPath: stateEffectsModule.states.Array.data[1].maxTolerance
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: stateEffectsModule.states.Array.data[0].levelRecoveredPerSecond
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2222096760297520349, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: stateEffectsModule.states.Array.data[1].levelRecoveredPerSecond
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5202498908236988343, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
       propertyPath: m_Name
-      value: PlayerTemplate Variant
+      value: PlayerStateEffects
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015653495622538174, guid: 8e52d79e582fb614588815aa671d0589, type: 3}
+      propertyPath: timerInputDisableAfterHit
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

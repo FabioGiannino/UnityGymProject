@@ -1,0 +1,8 @@
+public enum COMPARISON
+{
+    EQUAL,
+    LESS,
+    GREATER,
+    LESSEQUAL,
+    GREATEREQUAL
+}

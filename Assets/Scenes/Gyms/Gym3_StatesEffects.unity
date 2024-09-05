@@ -249,22 +249,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 331879877947446918, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
-      propertyPath: fireDamageTimer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 331879877947446918, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
-      propertyPath: postDamageInvulnerabilityTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 331879877947446918, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
-      propertyPath: stateEffectsModule.states.Array.data[0].levelRecoveredPerSecond
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 331879877947446918, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
-      propertyPath: stateEffectsModule.states.Array.data[1].levelRecoveredPerSecond
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1439627315700743852, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.09613562
@@ -308,10 +292,6 @@ PrefabInstance:
     - target: {fileID: 5944636016574764524, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
       propertyPath: m_Name
       value: PlayerStateEffects
-      objectReference: {fileID: 0}
-    - target: {fileID: 7445403259695217125, guid: 0a9bf92b758c53247a89fb7f0cc5f111, type: 3}
-      propertyPath: timerInputDisableAfterHit
-      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -443,10 +423,6 @@ PrefabInstance:
     - target: {fileID: 1798397819073186293, guid: 80cb3c2d84662574a958bd12e4cfa86f, type: 3}
       propertyPath: m_Name
       value: PoisonArea
-      objectReference: {fileID: 0}
-    - target: {fileID: 3065912852779812283, guid: 80cb3c2d84662574a958bd12e4cfa86f, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7808177985407830566, guid: 80cb3c2d84662574a958bd12e4cfa86f, type: 3}
       propertyPath: m_LocalPosition.x
