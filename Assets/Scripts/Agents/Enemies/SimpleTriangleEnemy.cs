@@ -4,8 +4,6 @@ using UnityEngine;
 public class SimpleTriangleEnemy : MonoBehaviour
 {
     [SerializeField]
-    private float timeToWait;
-    [SerializeField]
     private Vector2 moveSpeed;
     [SerializeField]
     private Transform patrolPoint1;

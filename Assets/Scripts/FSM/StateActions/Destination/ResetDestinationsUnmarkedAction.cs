@@ -30,12 +30,12 @@ namespace FSM
         {
             this.destinations = destinations;
         }
+
         public override void OnEnter()
         {
             if(!AllDestinationAreDiscovered()) return; 
             ResetAllDestinations();
         }
-
 
         private bool AllDestinationAreDiscovered()
         {
@@ -45,7 +45,6 @@ namespace FSM
                 {
                     return false;
                 }
-
             }
             return true;
         }

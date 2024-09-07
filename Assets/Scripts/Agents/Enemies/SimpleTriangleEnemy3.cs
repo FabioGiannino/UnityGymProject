@@ -54,16 +54,12 @@ public class SimpleTriangleEnemy3 : MonoBehaviour
     {
         StateMachine machine = GetComponent<StateMachine>();
         Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+        InitDestinations();
 
-        destinations = new Destination[points.Length];
         State[] moveTo = new State[points.Length];
         Transition[] movesToIdle = new Transition[destinations.Length];
         Transition[] idleToMove = new Transition[destinations.Length];
-        for (int i = 0; i < points.Length; i++)
-        {
-            destinations[i] = new Destination(points[i], new BoolWrapper(false));
-        }
-
+        
         //setup idle state
         State idle = IdleStateSetup(rigidbody);
         for (int i = 0; i < points.Length; i++)
@@ -82,7 +78,15 @@ public class SimpleTriangleEnemy3 : MonoBehaviour
         idle.SetUpMe(idleToMove);
         State[] states = moveTo.Concat(new State[] { idle }).ToArray();
         machine.Init(states, idle);
+    }
 
+    private void InitDestinations()
+    {
+        destinations = new Destination[points.Length];
+        for (int i = 0; i < points.Length; i++)
+        {
+            destinations[i] = new Destination(points[i], new BoolWrapper(false));
+        }
     }
 
 }

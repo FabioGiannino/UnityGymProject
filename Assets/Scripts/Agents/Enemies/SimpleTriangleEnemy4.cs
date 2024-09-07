@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FSM;
-using Codice.Client.BaseCommands.Merge;
 using System;
 public class SimpleTriangleEnemy4 : MonoBehaviour
 {
@@ -15,12 +14,10 @@ public class SimpleTriangleEnemy4 : MonoBehaviour
 
 
     private Destination[] destinations;
-    private Rigidbody2D rb;
-    private Destination currentDestination;
 
     private Func<Destination> destinationFunc;
 
-    public State SetupIdleState()
+    public State SetupIdleState(Rigidbody2D rb)
     {
         State idle = new State("Idle");
         StateAction stopMove = new SetVelocity2DAction(rb, Vector2.zero);
@@ -29,7 +26,7 @@ public class SimpleTriangleEnemy4 : MonoBehaviour
         return idle;
     }
 
-    public State SetupMoveState()
+    public State SetupMoveState(Rigidbody2D rb)
     {
         State move = new State("Move");
         StateAction setSpeed = new SetVelocity2DAction(rb, velocity,true);
@@ -57,16 +54,13 @@ public class SimpleTriangleEnemy4 : MonoBehaviour
 
     public void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
         StateMachine machine = GetComponent<StateMachine>();
-        destinations = new Destination[points.Length];
-        for (int i = 0; i < points.Length; i++)
-        {
-            destinations[i] = new Destination(points[i], new BoolWrapper(false));
-        }
-        currentDestination = destinations[0];
-        State idle = SetupIdleState();
-        State move = SetupMoveState();
+        InitDestinations();
+
+
+        State idle = SetupIdleState(rigidbody);
+        State move = SetupMoveState(rigidbody);
 
         Transition idleToMove = IdleToMove(idle, move);
         Transition moveToIdle = MoveToIdle(move, idle);
@@ -77,9 +71,13 @@ public class SimpleTriangleEnemy4 : MonoBehaviour
         machine.Init(new State[] {idle,move},idle);
     }
 
-
-    private void OnDestinationChange(Destination dest)
+    private void InitDestinations()
     {
-        currentDestination = dest;
+        destinations = new Destination[points.Length];
+        for (int i = 0; i < points.Length; i++)
+        {
+            destinations[i] = new Destination(points[i], new BoolWrapper(false));
+        }
     }
+
 }
